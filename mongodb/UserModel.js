@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
-const productSchema = mongoose.Schema({
-	_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+const { Schema, model } = require('mongoose');
+const productSchema = Schema({
+	_id: { type: Schema.Types.ObjectId, required: true },
 	username: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
 });
 
-const UserModel = mongoose.model('Users', productSchema);
-export default UserModel;
+const UserModel = model('Users', productSchema);
+module.exports = UserModel;

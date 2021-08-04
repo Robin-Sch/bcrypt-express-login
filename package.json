@@ -1,22 +1,21 @@
 {
-  "name": "bycrpt-express-login",
-  "version": "1.0.0",
-  "description": "A simple login webserver using bcrypt",
-  "main": "index.js",
-  "scripts": {
-    "start": "node -r dotenv/config index.js"
-  },
-  "type": "module",
-  "author": "Robin Schapendonk (ytrobinsch2@gmail.com)",
-  "license": "MIT",
-  "dependencies": {
-    "bcrypt": "^5.0.0",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "mongoose": "^5.10.12",
-    "passport": "^0.4.1",
-    "path": "^0.12.7"
-  }
+	"name": "bycrpt-express-login",
+	"version": "1.0.1",
+	"description": "A simple login webserver using bcrypt",
+	"main": "index.js",
+	"scripts": {
+	  "start": "node."
+	},
+	"author": "Robin",
+	"license": "MIT",
+	"dependencies": {
+	  "bcrypt": "^5.0.0",
+	  "dotenv": "^8.2.0",
+	  "ejs": "^3.1.5",
+	  "express": "^4.17.1",
+	  "express-session": "^1.17.1",
+	  "mongoose": "^5.10.12",
+	  "passport": "^0.4.1",
+	  "path": "^0.12.7"
+	}
 }

@@ -1,11 +1,13 @@
-import bcrypt from 'bcrypt';
-import express from 'express';
-import session from 'express-session';
-import mongoose from 'mongoose';
-import passport from 'passport';
-import path from 'path';
+require('dotenv').config();
 
-import UserModel from './mongodb/UserModel.js';
+const { compare, hash } = require('bcrypt');
+const express = require('express');
+const session = require('express-session');
+const { connect, Types } = require('mongoose');
+const passport = require('passport');
+const { join } = require('path');
+
+const UserModel = require('./mongodb/UserModel.js');
 
 const app = express();
 
@@ -16,10 +18,7 @@ const {
 
 const port = PORT || 3000;
 
-// Throw error if dotenv isn't used in start command
-if (!MONGODB) throw new Error('Please use "npm start" to start the server!');
-
-mongoose.connect(MONGODB, {
+connect(MONGODB, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useFindAndModify: false,
@@ -41,8 +40,8 @@ app
 		resave: true, 
 		saveUninitialized: true 
 	}))
-	.use(express.static('public'))
-	.set('views', path.join(path.resolve(), 'views'))
+	.use(express.static(join(__dirname, 'public')))
+	.set('views', join(__dirname, 'views'))
 	.set('view engine', 'ejs')
 	.get('/', async (req, res) => {
 		res.render('index', {
@@ -61,12 +60,12 @@ app
 		if (!email || !password) return res.send('Please enter Email and Password!');
 		const user = await UserModel.findOne({ email: email });
 		if (!user) return res.send('That email is not registered!');
-		if (await bcrypt.compare(password, user.password)) {
+		if (await compare(password, user.password)) {
 			req.session.loggedin = true;
 			req.session.username = user.username;
-			return res.redirect('/');
+			return res.json({ message: 'Correct', success: true });
 		} else {
-			return res.send('Incorrect Email and/or Password!');
+			return res.json({ message: 'Incorrect Email and/or Password!', success: false });
 		}
 	})
 	.get('/register', async (req, res) => {
@@ -85,9 +84,9 @@ app
 		}
 		if (alreadyRegistered.email) return res.send('That email is already registered!');
 		if (alreadyRegistered.username) return res.send('That username is already registered!');
-		const hashedPassword = await bcrypt.hash(password, 10);
+		const hashedPassword = await hash(password, 10);
 		const schema = new UserModel({
-			_id: new mongoose.Types.ObjectId(),
+			_id: new Types.ObjectId(),
 			username: username,
 			email: email,
 			password: hashedPassword,
@@ -95,7 +94,7 @@ app
 		schema.save().then(() => {
 			req.session.loggedin = true;
 			req.session.username = username;
-			return res.redirect('/');
+			return res.json({ message: 'Correct', success: true });
 		}).catch(() => {
 			return res.redirect('/register');
 		});
