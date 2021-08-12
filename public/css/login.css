@@ -4,6 +4,7 @@
     margin: auto;
   }
   .form {
+    color: white;
     position: relative;
     z-index: 1;
     background: #181818;
@@ -23,6 +24,9 @@
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
+  }
+  .form input[type="checkbox"] {
+    width: auto;
   }
   .form button {
     font-family: "Roboto", sans-serif;
